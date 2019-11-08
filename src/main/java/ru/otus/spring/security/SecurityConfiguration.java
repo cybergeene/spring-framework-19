@@ -29,17 +29,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
+                // По умолчанию SecurityContext хранится в сессии. Эта часть вырубает и каждый запросом приходитТ
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests().antMatchers("/public").anonymous()
                 .and()
                 .authorizeRequests().antMatchers("/authenticated").authenticated()
+//                .and()
+//                .authorizeRequests().antMatchers("/public").authenticated()
                 .and()
                 .httpBasic();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+        //return new BCryptPasswordEncoder(10);
         return new PasswordEncoder() {
             @Override
             public String encode(CharSequence charSequence) {
